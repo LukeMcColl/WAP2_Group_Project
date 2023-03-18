@@ -5,16 +5,20 @@
 <html>
 
 	<head>
-		<title>Temporary Home Page</title>
+		<title>ShowTalk Home Page</title>
+		
+		<!-- CSS -->
+		<link rel ="stylesheet" href = "{% static 'css/homepage.css' %}" />
 	</head>
 
 	<body>
-		<h1>Title</h1>
+		<h1>Welcome to ShowTalk</h1>
 		<div>
-			Message
+			A website for television lovers of all kinds.
 		</div>
 		
 		<div>
+			Today's clip:
 			<video controls>
 				<source src="{% static 'videos/glareworm.mp4' %}" type="video/mp4">
 			</video>
