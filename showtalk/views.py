@@ -3,4 +3,5 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def homepage(request):
-    return HttpResponse("Temporary Home Page Message.")
+
+    return render(request, 'showtalk/index.html')
