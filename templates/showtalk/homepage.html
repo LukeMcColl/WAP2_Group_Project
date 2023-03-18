@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+{% load staticfiles %}
+
 <html>
 
 	<head>
@@ -10,6 +13,13 @@
 		<div>
 			Message
 		</div>
+		
+		<div>
+			<video>
+				<source src="{% static 'videos/glareworm.mp4' %}" type="video/mp4">
+			</video>
+		</div>
+		
 	</body>
 
 </html>
