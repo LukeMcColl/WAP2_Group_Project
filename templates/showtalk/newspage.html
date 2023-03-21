@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+    <style>
+        .back-button {
+        display: inline-block;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        margin-top: 1em;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            padding: 1em;
+            text-align: center;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2em;
+            margin: 0;
+        }
+
+        main {
+            margin: 2em;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1em;
+            padding: 1em;
+        }
+
+        h3 {
+            margin: 0 0 0.5em 0;
+            font-size: 1.5em;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .no-content {
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to News Page!</h1>
+    </header>
+    <main>
+       
+        <a href="{% url 'showtalk:homepage' %}" class="back-button">Home Page</a>
+        <h3></h3>
+        <h3> You can find all kind of news here</h3>
+
+        {% if news_list %}
+        <ul>
+            {% for elem in news_list %}
+            <li>
+                <h3>{{ elem.title }}</h3>
+                <p>{{ elem.content }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-content">No contents</p>
+        {% endif %}
+
+    </main>
+</body>
+</html>
