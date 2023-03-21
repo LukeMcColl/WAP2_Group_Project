@@ -1,56 +1,47 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.core.validators import FileExtensionValidator
-
-# Create your models here.
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_picture = models.ImageField(upload_to="profile_images", blank=True)
-    bio = models.TextField(max_length=512)
-
-    def __str__(self) -> str:
-        return self.user.username
 
 
-class TVShow(models.Model):
-    title = models.CharField(max_length=128, unique=True)
-    description = models.TextField(max_length=512)
-    image = models.ImageField(upload_to="show_covers", blank=True)
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
+class user(models.Model):
+    id = models.AutoField(primary_key=True)
+    username = models.CharField('Account',max_length=20,default='',unique=True)
+    password = models.CharField('Password',max_length=20, default='')
+    name = models.CharField("Name",max_length=20,default='')
+    img = models.ImageField(upload_to='img',default='img/images.png')
+    email = models.EmailField('Email',max_length=20,default='')
+    bio = models.CharField('',max_length=200,default='')
+    favourite_shows = models.CharField('', max_length=200, default='')
 
-    def __str__(self) -> str:
-        return self.title
+    create_time = models.DateTimeField('create time', auto_now_add=True)
+    updated_time = models.DateTimeField('updated time', auto_now=True)
+
+    class Meta:
+        db_table = 'user'
+        verbose_name_plural = 'user'
 
 
-class FavouriteTVShow(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    tv_show = models.OneToOneField(TVShow, on_delete=models.CASCADE)
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
 
 
-class Clip(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    tv_show = models.OneToOneField(TVShow, on_delete=models.CASCADE)
-    title = models.CharField(max_length=64)
-    description = models.TextField(max_length=512)
-    video_file = models.FileField(upload_to="clips")
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
+class tv(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=20,default='')
 
-    # Ensures that `video_file` is a video, as Django does not have
-    # native support for videos. See https://stackoverflow.com/a/68017377
-    validators = [
-        FileExtensionValidator(
-            allowed_extensions=[
-                "mov",
-                "avi",
-                "flv",
-                "mp4",
-                "mkv",
-                "webm",
-            ],
-            message="Unknown file format: not a video",
-        )
-    ]
+    title = models.CharField(max_length=20,default='')
+    docs = models.CharField('docs', max_length=200, default='')
+    tv = models.FileField(upload_to='tv',default='tv/demo.mp4')
+
+    create_time = models.DateTimeField('create time', auto_now_add=True)
+    updated_time = models.DateTimeField('updated time', auto_now=True)
+
+    class Meta:
+        db_table = 'tv'
+
+class pl(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=20,default='')
+    tv_id =  models.CharField(max_length=20,default='')
+    doc = models.TextField()
+    create_time = models.DateTimeField('create time', auto_now_add=True)
+    updated_time = models.DateTimeField('updated time', auto_now=True)
+
+    class Meta:
+        db_table = 'pl'

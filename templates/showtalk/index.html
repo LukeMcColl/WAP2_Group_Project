@@ -10,7 +10,6 @@
       	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 	</head>
 
-
 	<nav class="navbar navbar-expand-lg navbar-light bg-info">
 	  <a class="navbar-brand active"  href="/">Index</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,35 +49,22 @@
 		<div style="text-align: center">
 			A website for television lovers of all kinds.
 		</div>
-		
+        {% for a in tvall %}
 		<div  style="text-align: center;width: 70%;margin: auto" class="shadow p-3 mb-5 bg-white rounded">
 			<p class="text-info">
-				Today's clip:{{ tvall.title}}
+				Today's clip:{{ a.title}}
 			</p>
 			<video controls autoplay style="width: 90%">
-				<source src="../../media/{{ tvall.tv }}" type="video/mp4">
+				<source src="../../media/{{ a.tv }}" type="video/mp4">
 			</video>
 			<p class="text-warning">
-				{{ tvall.docs }}
+				{{ a.docs }}
 			</p>
-			<div style="text-align: center;margin: auto">
-				<form action="/pl" method="post">
-					<input style="width: 50%;height: 35px" type="text"   name="pinglun">
-					<input type="hidden" name ="id" value="{{ tvall.id }}">
-					<input type="submit" class="btn bg-success" value="discuss">
-				</form>
+            <p>Click for details:<a href="/?page={{ a.id }}">{{ a.title }}</a></p>
 
-			</div>
 
 		</div>
-
-	<div style="width: 60%;margin: auto" class="shadow-none p-3 mb-5 bg-light rounded">
-		{% for a in plall %}
-		<p style="font-size: 14px">ID:{{ a.user_id }}——————Time:{{ a.create_time }}</p>
-		<p class="text-info" style="display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;">{{ a.doc }}</p>
-		<hr>
-		{% endfor %}
-	</div>
+    {% endfor %}
 
 
 
