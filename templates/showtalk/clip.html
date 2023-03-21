@@ -1,0 +1,15 @@
+<!--
+    This template must be provided a `Clip`.
+
+    Note about the `preload` attribute:
+    It loads data about the video such as the dimensions, but does not download the video until 
+    it is played. See:
+        https://clubmate.fi/what-does-the-preload-attribute-in-the-video-element-do
+        https://www.w3schools.com/tags/att_video_preload.asp
+-->
+<video controls preload="metadata">
+  <source
+    src="{{clip.video_file.url}}"
+    type="video/{{clip.video_file.extension}}"
+  />
+</video>
