@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from showtalk.models import user, tv, pl
 from django.http import (
     HttpResponse,
     HttpRequest,
@@ -7,6 +6,10 @@ from django.http import (
     HttpResponsePermanentRedirect,
 )
 from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
+
+from showtalk.forms import UserForm
+from showtalk.models import user, tv, pl
 
 
 def reverse_redirect(route_name: str, *args, **kwargs) -> HttpResponsePermanentRedirect:
@@ -77,50 +80,70 @@ def login(request):
         return reverse_redirect("showtalk:homepage")
 
 
-def profile(request):
-    if request.method == "GET":
+# def profile(request):
+#     if request.method == "GET":
+#         try:
+#             uid = request.session.get("uid")
+#             userall = user.objects.filter(id=uid)
+#         except:
+#             return reverse_redirect("showtalk:login")
 
+#         return render(request, "showtalk/profile.html", locals())
+
+#     if request.method == "POST":
+#         uid = request.session.get("uid")
+
+#         name = request.POST.get("name")
+#         username = request.POST.get("username")
+#         password = request.POST.get("password")
+#         email = request.POST.get("email")
+#         bio = request.POST.get("bio")
+#         favourite = request.POST.get("favourite")
+#         img = request.FILES.get("img")
+
+#         # fix
+#         try:
+#             x = user.objects.get(id=uid)
+#             if name != "":
+#                 x.name = name
+#             if username != "":
+#                 x.username = username
+#             if password != "":
+#                 x.password = password
+#             if favourite != "":
+#                 x.favourite_shows = favourite
+#             if bio != "":
+#                 x.bio = bio
+#             if email != "":
+#                 x.email = email
+#             if img != "":
+#                 x.img = img
+#             x.save()  # done/save
+#             return HttpResponse("uplord successfully")
+#         except Exception as e:
+#             print(e)
+#             return HttpResponse("uplord fail")
+
+
+def profile(request: HttpRequest) -> HttpResponse:
+    if request.method == "GET":
         try:
             uid = request.session.get("uid")
-            userall = user.objects.filter(id=uid)
-        except:
+            current_user = user.objects.get(id=uid)
+            form = UserForm(instance=current_user)
+        except ObjectDoesNotExist:
             return reverse_redirect("showtalk:login")
 
-        return render(request, "showtalk/profile.html", locals())
+    elif request.method == "POST":
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Profile succcessfully updated")
 
-    if request.method == "POST":
-        uid = request.session.get("uid")
+    else:
+        return HttpResponseNotAllowed(["GET", "POST"])
 
-        name = request.POST.get("name")
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        email = request.POST.get("email")
-        bio = request.POST.get("bio")
-        favourite = request.POST.get("favourite")
-        img = request.FILES.get("img")
-
-        # fix
-        try:
-            x = user.objects.get(id=uid)
-            if name != "":
-                x.name = name
-            if username != "":
-                x.username = username
-            if password != "":
-                x.password = password
-            if favourite != "":
-                x.favourite_shows = favourite
-            if bio != "":
-                x.bio = bio
-            if email != "":
-                x.email = email
-            if img != "":
-                x.img = img
-            x.save()  # done/save
-            return HttpResponse("uplord successfully")
-        except Exception as e:
-            print(e)
-            return HttpResponse("uplord fail")
+    return render(request, "showtalk/profile.html", context={"form": form, "user": current_user})
 
 
 def pinglun(request):
