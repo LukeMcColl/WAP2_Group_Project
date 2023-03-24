@@ -1,6 +1,6 @@
 from django import forms
 
-from showtalk.models import user
+from showtalk.models import user, tv
 
 FORM_FIELD_STYLES = {"class": "form-control"}
 
@@ -25,4 +25,15 @@ class UserForm(forms.ModelForm):
             "bio": forms.TextInput(attrs=FORM_FIELD_STYLES),
             "favourite_shows": forms.TextInput(attrs=FORM_FIELD_STYLES),
             "img": forms.FileInput(attrs=FORM_FIELD_STYLES),
+        }
+
+
+class TVForm(forms.ModelForm):
+    class Meta:
+        model = tv
+        fields = ("title", "docs", "tv")
+        widgets = {
+            "title": forms.TextInput(attrs=FORM_FIELD_STYLES),
+            "docs": forms.TextInput(attrs=FORM_FIELD_STYLES),
+            "tv": forms.FileInput(attrs=FORM_FIELD_STYLES),
         }
