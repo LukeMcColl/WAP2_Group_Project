@@ -25,9 +25,9 @@ MEDIA_DIR = os.path.join(BASE_DIR, "media")
 SECRET_KEY = "+it^b+16ydh!-4*9+tfrqwgn_v4id2l=xd*bo6ltodf6%89ze@"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
