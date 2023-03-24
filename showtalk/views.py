@@ -42,8 +42,11 @@ def register(request):
         up_tv = tv.objects.create(
             user_id=up_sql.id, title="default video", docs="default info"
         )
-        return HttpResponse("register ok")
-        # return HttpResponseRedirect('/')
+        return render(
+            request,
+            "feedback.html",
+            context={"success": True, "action_name": "Registration"},
+        )
 
 
 def logout(request):
@@ -60,7 +63,15 @@ def logout(request):
 def login(request):
     if request.method == "GET":
         if request.session.get("username"):
-            return HttpResponse("already logged in")
+            return render(
+                request,
+                "feedback.html",
+                context={
+                    "success": False,
+                    "action_name": "Login",
+                    "extra_message": "You are already logged in.",
+                },
+            )
 
         else:
             return render(request, "login/login.html")
@@ -75,7 +86,11 @@ def login(request):
 
             request.session["name"] = test.name
         except:
-            return HttpResponse("Account password error")
+            return render(
+                request,
+                "feedback.html",
+                context={"success": False, "action_name": "Login"},
+            )
 
         return reverse_redirect("showtalk:homepage")
 
@@ -93,7 +108,11 @@ def profile(request: HttpRequest) -> HttpResponse:
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("Profile succcessfully updated")
+            return render(
+                request,
+                "feedback.html",
+                context={"success": True, "action_name": "Profile update"},
+            )
 
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
@@ -110,10 +129,18 @@ def pinglun(request):
         tvid = request.POST.get("id")
         try:
             pl.objects.create(doc=pinglun, user_id=uid, tv_id=tvid)
-            return HttpResponse("send successfully")
+            return render(
+                request,
+                "feedback.html",
+                context={"success": True, "action_name": "Post"},
+            )
 
         except:
-            return HttpResponse("send fail")
+            return render(
+                request,
+                "feedback.html",
+                context={"success": False, "action_name": "Post"},
+            )
 
 
 def tvv(request):
@@ -143,10 +170,18 @@ def tvv(request):
             if tv != "":
                 x.tv = tvv
             x.save()  # save
-            return HttpResponse("uplord successfully")
+            return render(
+                request,
+                "feedback.html",
+                context={"success": True, "action_name": "Upload"},
+            )
         except Exception as e:
             print(e)
-            return HttpResponse("uplord fail")
+            return render(
+                request,
+                "feedback.html",
+                context={"success": False, "action_name": "Upload"},
+            )
 
 
 def find_show(request: HttpRequest) -> HttpResponse:

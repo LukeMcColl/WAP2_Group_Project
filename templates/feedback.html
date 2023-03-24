@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block metadata %}
+    <title>Result</title>
+{% endblock metadata %}
+
+{% block content %}
+<div class="container m-5">
+    {% if success %}
+        <div class="alert alert-success">
+            <h4>{{ action_name }} successful!</h4>
+            <p>{{ extra_message }}</p>
+        </div>
+
+    {% else %}
+    <div class="alert alert-danger">
+        <h4>{{ action_name }} failed :(</h4>
+        <p>{{ extra_message }}</p>
+    </div>
+    {% endif %}
+    <a class="text-white" href="{% url 'showtalk:homepage' %}">
+        <button class="btn btn-success" type="button">Return home</button>
+    </a>
+</div>
+{% endblock content %}
