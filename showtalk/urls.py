@@ -12,4 +12,5 @@ urlpatterns = [
     path("logout", views.logout, name="logout"),
     path("tv", views.tvv, name="tv"),
     path("pl", views.pinglun, name="pl"),
+    path("find-show", views.find_show, name="find-show"),
 ]
