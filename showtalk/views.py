@@ -9,6 +9,10 @@ from django.http import (
 from django.urls import reverse
 
 
+def reverse_redirect(route_name: str, *args, **kwargs) -> HttpResponsePermanentRedirect:
+    return redirect(reverse(route_name, *args, **kwargs))
+
+
 def homepage(request, page_id: int = None):
     if request.method == "GET":
         single_show = bool(page_id)
@@ -46,7 +50,7 @@ def logout(request):
         del request.session["uid"]
     if "name" in request.session:
         del request.session["name"]
-    resp = HttpResponseRedirect("/")
+    resp = reverse_redirect("showtalk:homepage")
     return resp
 
 
@@ -70,7 +74,7 @@ def login(request):
         except:
             return HttpResponse("Account password error")
 
-        return HttpResponseRedirect("/")
+        return reverse_redirect("showtalk:homepage")
 
 
 def profile(request):
@@ -80,7 +84,7 @@ def profile(request):
             uid = request.session.get("uid")
             userall = user.objects.filter(id=uid)
         except:
-            return HttpResponseRedirect("/login")
+            return reverse_redirect("showtalk:login")
 
         return render(request, "showtalk/profile.html", locals())
 
@@ -138,7 +142,7 @@ def tvv(request):
             uid = request.session.get("uid")
             tvall = tv.objects.filter(user_id=uid)
         except:
-            return HttpResponseRedirect("/login")
+            return reverse_redirect("showtalk:login")
 
         return render(request, "showtalk/tv.html", locals())
 
@@ -163,10 +167,6 @@ def tvv(request):
         except Exception as e:
             print(e)
             return HttpResponse("uplord fail")
-
-
-def reverse_redirect(route_name: str, *args, **kwargs) -> HttpResponsePermanentRedirect:
-    return redirect(reverse(route_name, *args, **kwargs))
 
 
 def find_show(request: HttpRequest) -> HttpResponse:
