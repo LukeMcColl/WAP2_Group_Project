@@ -6,6 +6,7 @@ from django.http import (
     HttpResponsePermanentRedirect,
 )
 from django.urls import reverse
+from typing import Optional
 
 from showtalk.forms import UserForm
 from showtalk.models import user, tv, pl
@@ -94,7 +95,7 @@ def login(request):
         return reverse_redirect("showtalk:homepage")
 
 
-def get_session_uid(request: HttpRequest) -> int | None:
+def get_session_uid(request: HttpRequest) -> Optional[int]:
     return request.session.get("uid")
 
 
