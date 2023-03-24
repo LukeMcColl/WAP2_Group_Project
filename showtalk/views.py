@@ -1,6 +1,12 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from showtalk.models import user, tv, pl
-from django.http import HttpResponse
+from django.http import (
+    HttpResponse,
+    HttpRequest,
+    HttpResponseNotAllowed,
+    HttpResponsePermanentRedirect,
+)
+from django.urls import reverse
 
 
 def homepage(request, page_id: int = None):
@@ -13,7 +19,6 @@ def homepage(request, page_id: int = None):
             # Translation note: "pinglun" is Chinese for "comment"
             "comments": pl.objects.filter(tv_id=page_id) if single_show else [],
         }
-        print(context["comments"])
         return render(request, "showtalk/homepage.html", context=context)
 
 
@@ -158,3 +163,24 @@ def tvv(request):
         except Exception as e:
             print(e)
             return HttpResponse("uplord fail")
+
+
+def reverse_redirect(route_name: str, *args, **kwargs) -> HttpResponsePermanentRedirect:
+    return redirect(reverse(route_name, *args, **kwargs))
+
+
+def find_show(request: HttpRequest) -> HttpResponse:
+    go_home = reverse_redirect("showtalk:homepage")
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+
+    query = request.POST.get("query")
+    if not query:
+        return go_home
+
+    matches = tv.objects.filter(title__contains=query)
+    return (
+        reverse_redirect("showtalk:homepage", kwargs={"page_id": matches[0].id})
+        if matches
+        else go_home
+    )
