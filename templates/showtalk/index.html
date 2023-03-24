@@ -1,78 +1,28 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-{% load staticfiles %}
+{% block metadata %}
+<title >ShowTalk Home Page</title>
+{% endblock metadata %}
 
-<html>
-	<head>
-		<title >ShowTalk Home Page</title>
-
-		<!-- CSS -->
-      	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-	</head>
-
-	<nav class="navbar navbar-expand-lg navbar-light bg-info">
-	  <a class="navbar-brand active"  href="/">Index</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	  </button>
-
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto">
-		  <li class="nav-item">
-			<a class="nav-link" href="/login">login</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="/register">register</a>
-		  </li>
-			<li class="nav-item">
-			<a class="nav-link " href="/logout">logout</a>
-		  </li>
-
-		  <li class="nav-item">
-			<a class="nav-link " href="/profile">profile</a>
-		  </li>
-						<li class="nav-item">
-			<a class="nav-link " href="/tv">amend tv</a>
-		  </li>
-		</ul>
-		<form class="form-inline my-2 my-lg-0">
-		  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		  <button class="btn  my-2 my-sm-0 " type="submit">Search</button>
-		</form>
-	  </div>
-	</nav>
-
-
-
-	<body>
-		<h1 style="text-align: center">Welcome to ShowTalk</h1>
-		<div style="text-align: center">
-			A website for television lovers of all kinds.
-		</div>
-        {% for a in tvall %}
-		<div  style="text-align: center;width: 70%;margin: auto" class="shadow p-3 mb-5 bg-white rounded">
-			<p class="text-info">
-				Today's clip:{{ a.title}}
-			</p>
-			<video controls autoplay style="width: 90%">
-				<source src="../../media/{{ a.tv }}" type="video/mp4">
-			</video>
-			<p class="text-warning">
-				{{ a.docs }}
-			</p>
+{% block content %}
+    <h1 style="text-align: center">Welcome to ShowTalk</h1>
+    <div style="text-align: center">
+        A website for television lovers of all kinds.
+    </div>
+    {% for a in tvall %}
+        <div  style="text-align: center;width: 70%;margin: auto" class="shadow p-3 mb-5 bg-white rounded">
+            <p class="text-info">
+                Today's clip:{{ a.title}}
+            </p>
+            <video controls autoplay style="width: 90%">
+                <source src="../../media/{{ a.tv }}" type="video/mp4">
+            </video>
+            <p class="text-warning">
+                {{ a.docs }}
+            </p>
             <p>Click for details:<a href="/?page={{ a.id }}">{{ a.title }}</a></p>
 
 
-		</div>
+        </div>
     {% endfor %}
-
-
-
-
-	</body>
-
-</html>
-
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+{% endblock content %}
