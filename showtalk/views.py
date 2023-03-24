@@ -6,7 +6,6 @@ from django.http import (
     HttpResponsePermanentRedirect,
 )
 from django.urls import reverse
-from django.core.exceptions import ObjectDoesNotExist
 
 from showtalk.forms import UserForm
 from showtalk.models import user, tv, pl
@@ -95,17 +94,22 @@ def login(request):
         return reverse_redirect("showtalk:homepage")
 
 
-def profile(request: HttpRequest) -> HttpResponse:
-    if request.method == "GET":
-        try:
-            uid = request.session.get("uid")
-            current_user = user.objects.get(id=uid)
-            form = UserForm(instance=current_user)
-        except ObjectDoesNotExist:
-            return reverse_redirect("showtalk:login")
+def get_session_uid(request: HttpRequest) -> int | None:
+    return request.session.get("uid")
 
-    elif request.method == "POST":
-        form = UserForm(request.POST)
+
+def profile(request: HttpRequest) -> HttpResponse:
+    ALLOWED_METHODS = ["GET", "POST"]
+    if request.method not in ALLOWED_METHODS:
+        return HttpResponseNotAllowed(ALLOWED_METHODS)
+
+    uid = get_session_uid(request)
+    if not uid:
+        return reverse_redirect("showtalk:login")
+    current_user = user.objects.get(id=uid)
+
+    if request.method == "POST":
+        form = UserForm(request.POST, instance=current_user)
         if form.is_valid():
             form.save()
             return render(
@@ -113,9 +117,8 @@ def profile(request: HttpRequest) -> HttpResponse:
                 "feedback.html",
                 context={"success": True, "action_name": "Profile update"},
             )
-
-    else:
-        return HttpResponseNotAllowed(["GET", "POST"])
+    else:  # GET
+        form = UserForm(instance=current_user)
 
     return render(
         request, "showtalk/profile.html", context={"form": form, "user": current_user}
