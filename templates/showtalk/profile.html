@@ -1,104 +1,55 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-{% load staticfiles %}
-
-<html>
-	<head>
-		<title >Profile</title>
-
-		<!-- CSS -->
-      	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-	</head>
-
-	<nav class="navbar navbar-expand-lg navbar-light bg-info">
-	  <a class="navbar-brand "  href="/">Index</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	  </button>
-
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto">
-		  <li class="nav-item">
-			<a class="nav-link" href="/login">login</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="/register">register</a>
-		  </li>
-			<li class="nav-item">
-			<a class="nav-link " href="/logout">logout</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link active" href="/profile">profile</a>
-		  </li>
-			<li class="nav-item">
-			<a class="nav-link " href="/tv">amend tv</a>
-		  </li>
-		</ul>
-		<form class="form-inline my-2 my-lg-0">
-		  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		  <button class="btn  my-2 my-sm-0 " type="submit">Search</button>
-		</form>
-	  </div>
-	</nav>
+{% block metadata %}
+<title>Profile</title>
+{% endblock metadata %}
 
 
+{% block content %}
+    <h1 style="text-align: center">Welcome to Profile page!</h1>
+    <div class="shadow p-3 mb-5 bg-white rounded " style="width: 60%;margin: auto;margin-top: 120px">
+        {% for p in userall %}
+            <div style="width: 60%;margin: auto" class="shadow p-3 mb-5 bg-white rounded">
+                <form  action="{% url 'showtalk:profile' %}" method="post" enctype="multipart/form-data">
+                    <div style="text-align: center">
+                        <img src="{{ p.img.url }}" width="50%"  >
+                    </div>
 
-	<body>
-		<h1 style="text-align: center">Welcome to Profile page!</h1>
-		<div class="shadow p-3 mb-5 bg-white rounded " style="width: 60%;margin: auto;margin-top: 120px">
-  	{% for p in userall %}
-    	<div style="width: 60%;margin: auto" class="shadow p-3 mb-5 bg-white rounded">
+                    <div class="form-group">
+                        <label >username</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ p.username }}" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label >name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ p.name }}" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label >password</label>
+                        <input type="password" class="form-control" id="password" name="password" value="{{ p.password}}" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label >email</label>
+                        <input type="email" class="form-control"  name="email" value="{{ p.email }}" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label >bio</label>
+                        <input type="text" class="form-control"  name="bio" value="{{ p.bio }}" aria-describedby="emailHelp">
+                    </div>
 
-
-			<form  action="/profile" method="post" enctype="multipart/form-data">
-				<div style="text-align: center">
-					<img src="../../media/{{ p.img }}" width="50%"  >
-				</div>
-
-			  <div class="form-group">
-				<label >username</label>
-				<input type="text" class="form-control" id="username" name="username" value="{{ p.username }}" aria-describedby="emailHelp">
-			  </div>
-				<div class="form-group">
-				<label >name</label>
-				<input type="text" class="form-control" id="name" name="name" value="{{ p.name }}" aria-describedby="emailHelp">
-			  </div>
-				<div class="form-group">
-				<label >password</label>
-				<input type="password" class="form-control" id="password" name="password" value="{{ p.password}}" aria-describedby="emailHelp">
-			  </div>
-				<div class="form-group">
-				<label >email</label>
-				<input type="email" class="form-control"  name="email" value="{{ p.email }}" aria-describedby="emailHelp">
-			  </div>
-
-
-			  <div class="form-group">
-				<label >bio</label>
-				<input type="text" class="form-control"  name="bio" value="{{ p.bio }}" aria-describedby="emailHelp">
-			  </div>
-
-				<div class="form-group">
-				<label >favourite</label>
-				<input type="text" class="form-control"  name="favourite" value="{{ p.favourite_shows }}" aria-describedby="emailHelp">
-			  </div>
-				<div class="form-group">
-										<div class="form-group">
-											<label class="form-label w-100">upload img</label>
-											<input type="file" name="img">
-											<small class="form-text text-muted">jpg/png</small>
-										</div>
-				</div>
-			  <input type="submit" class="btn bg-success" value="Amend">
-			  {% endfor %}
-			</form>
-		</div>
-	</div>
-
-
-
-	</body>
-
-</html>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+                    <div class="form-group">
+                        <label >favourite</label>
+                        <input type="text" class="form-control"  name="favourite" value="{{ p.favourite_shows }}" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="form-label w-100">upload img</label>
+                            <input type="file" name="img">
+                            <small class="form-text text-muted">jpg/png</small>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn bg-success" value="Amend">
+                </form>
+            </div>
+        {% endfor %}
+</div>
+{% endblock content %}
