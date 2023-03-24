@@ -10,12 +10,44 @@
     <div class="shadow p-3 mb-5 bg-white rounded " style="width: 60%;margin: auto;margin-top: 120px">
         <div style="width: 60%;margin: auto" class="shadow p-3 mb-5 bg-white rounded">
             <div style="text-align: center">
+            <img src="{{ user.img.url }}" width="50%"  />
             <form  action="{% url 'showtalk:profile' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                    <img src="{{ user.img.url }}" width="50%"  />
+                <div class="form-group">
+                    <label class="float-left" for="{{ form.username.id_for_label }}">Username: </label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
                 </div>
-
-                {{ form }}
+                <div class="form-group">
+                    <label class="float-left" for="{{ form.name.id_for_label }}">Name: </label>
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                </div>
+                <div class="form-group">
+                    <label class="float-left" for="{{ form.password.id_for_label }}">Password: </label>
+                    {{ form.password }}
+                    {{ form.password.errors }}
+                </div>
+                <div class="form-group">
+                    <label class="float-left" for="{{ form.email.id_for_label }}">Email: </label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+                <div class="form-group">
+                    <label class="float-left" for="{{ form.bio.id_for_label }}">Bio: </label>
+                    {{ form.bio }}
+                    {{ form.bio.errors }}
+                </div>
+                <div class="form-group">
+                    <label class="float-left" for="{{ form.favourite_shows.id_for_label }}">Favourite shows: </label>
+                    {{ form.favourite_shows }}
+                    {{ form.favourite_shows.errors }}
+                </div>
+                <div class="form-group">
+                    <label class="float-left" for="{{ form.img.id_for_label }}">Avatar: </label>
+                    {{ form.img }}
+                    {{ form.img.errors }}
+                </div>
                 <input type="submit" class="btn bg-success" value="Update">
             </form>
         </div>
