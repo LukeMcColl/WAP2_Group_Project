@@ -11,32 +11,47 @@
         A website for television lovers of all kinds.
     </div>
 
-    <div  style="text-align: center;width: 70%;margin: auto" class="shadow p-3 mb-5 bg-white rounded">
-        <p class="text-info">
-            Today's clip:{{ tvall.title}}
-        </p>
-        <video controls autoplay style="width: 90%">
-            <source src="../../media/{{ tvall.tv }}" type="video/mp4">
-        </video>
-        <p class="text-warning">
-            {{ tvall.docs }}
-        </p>
-        <div style="text-align: center;margin: auto">
-            <form action="/pl" method="post">
-                <input style="width: 50%;height: 35px" type="text"   name="pinglun">
-                <input type="hidden" name ="id" value="{{ tvall.id }}">
-                <input type="submit" class="btn bg-success" value="discuss">
-            </form>
+    {% if shows %}
+        {% for show in shows %}
+            <div  style="text-align: center;width: 70%;margin: auto" class="shadow p-3 mb-5 bg-white rounded">
+                <p class="text-info">
+                    Today's clip:{{ show.title}}
+                </p>
+                <video controls autoplay style="width: 90%">
+                    <source src="{{ show.tv.url }}" type="video/mp4">
+                </video>
+                <p class="text-warning">
+                    {{ show.docs }}
+                </p>
+                <!--  -->
+                <p>Click for details:<a href="{% url 'showtalk:homepage' show.id %}" >{{ show.title }}</a></p>
+                <div style="text-align: center;margin: auto">
+                    <form action="{% url 'showtalk:pl' %}" method="post">
+                        <input style="width: 50%;height: 35px" type="text" name="pinglun" />
+                        <input type="hidden" name ="id" value="{{ show.id }}" />
+                        <input type="submit" class="btn bg-success" value="Post" />
+                    </form>
 
-        </div>
+                {% if single_show %}
+                    <div style="width: 60%;margin: auto" class="shadow-none p-3 mb-5 bg-light rounded">
+                        {% for comment in comments %}
+                        <p style="font-size: 14px">ID:{{ comment.user_id }}——————Time:{{ comment.create_time }}</p>
+                        <p class="text-info" style="display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;">{{ comment.doc }}</p>
+                        <hr>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-    </div>
-
-    <div style="width: 60%;margin: auto" class="shadow-none p-3 mb-5 bg-light rounded">
-        {% for a in plall %}
-        <p style="font-size: 14px">ID:{{ a.user_id }}——————Time:{{ a.create_time }}</p>
-        <p class="text-info" style="display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;">{{ a.doc }}</p>
-        <hr>
+            </div>
         {% endfor %}
+    {% else %}
+    
+    <div class="container mt-5">
+        <div class="alert alert-danger text-center" role="alert">No shows have been uploaded yet.</div>
     </div>
+    {% endif %}
+
+    </div>
+
+    
 {% endblock content %}
